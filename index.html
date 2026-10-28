@@ -1412,6 +1412,7 @@ function phMigrate(){D.calls.forEach(c=>{if(c.kind==='rej')c.kind='miss'});
   if(D.settings&&!D.settings.cut3b){D.settings.cut3b=1;const T=D.kakao.find(t=>/시온이/.test(String(t.name)));if(T){
     if(D.settings.cut3){let k=-1;T.msgs.forEach((m,i)=>{if(m.w==='th'&&m.t==='대영아')k=i});if(k>=0&&!T.msgs.slice(k).some(m=>m.t==='전화 좀 받아줘')){T.msgs.splice(k+1,0,{w:'th',t:'기사 뜬 거 별 일 아니니까 조금만 기다려봐',time:'오후 6:00'},{w:'th',t:'내가 미안해',time:'오후 6:00'},{w:'th',t:'전화 좀 받아줘',time:'오후 6:15'})}}
     let c=3;while(c>0&&T.msgs.length&&T.msgs[T.msgs.length-1].w==='me'){T.msgs.pop();c--}}save()}
+  if(D.settings&&!D.settings.gate1){const T=D.kakao.find(t=>/시온이/.test(String(t.name)));if(T&&!T.msgs.some(m=>m.t==='영아 나 학교 정문 앞이야')){let k=-1;T.msgs.forEach((m,i)=>{if(m.w==='th'&&m.t==='내가 미안해')k=i});if(k>=0)T.msgs.splice(k+1,0,{w:'th',t:'영아 나 학교 정문 앞이야',time:'오후 6:04'})}D.settings.gate1=1;save()}
   D.kakao.forEach(t=>t.msgs.forEach(m=>{if(m.unr&&!m.auto)delete m.unr}));
   if(Array.isArray(D.songs)){const m=D.songs.find(x=>x.id==='mu2'&&x.title==='Drowing');if(m){m.title='Drowning';save()}}
   if(Array.isArray(D.songs)&&!D.songs.some(x=>x.id==='mu2')&&!D.songsV2){D.songs.push(MU_DEF()[1]);D.songsV2=1;save()}
@@ -2235,7 +2236,7 @@ function sionCall(name){
 function sionKakao(){
   const k=D.kakao.findIndex(t=>/시온이/.test(String(t.name)));if(k<0||nav.locked)return;
   sionKk=true;if(D.kakao[k].msgs.some(m=>m.auto&&m.w==='th'&&m.t==='지금 출발했어'))return;
-  ['지금 출발했어','10분안에 갈게'].forEach((m,i)=>afterT.push(setTimeout(()=>{const j=D.kakao.findIndex(t=>/시온이/.test(String(t.name)));if(j>=0)arrive('kakao',j,m,'',true,i?200:0)},i*1100)));
+  ['영아 집으로 갈게','지금 출발했어','10분안에 갈게'].forEach((m,i)=>afterT.push(setTimeout(()=>{const j=D.kakao.findIndex(t=>/시온이/.test(String(t.name)));if(j>=0)arrive('kakao',j,m,'',true,i?200:0)},i*1100)));
 }
 function sendAfter(){
   const n=D.settings.autoName,list=[D.settings.afterText,D.settings.afterText2].filter(x=>x&&String(x).trim());
