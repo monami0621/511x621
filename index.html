@@ -2294,8 +2294,9 @@ function muteCap(on){
   if(!call||call.state!=='active')return;
   if(on){
     if(call.cc==null||call.mc!=null)return;
-    const nm=String(call.name||''),who=/사쿠야/.test(nm)?'사쿠야':/료/.test(nm)?'료':/시온/.test(nm)?'시온':null;if(!who)return;
+    const nm=String(call.name||''),par=/어무니|어머니/.test(nm)?'어무니':/아부지|아버지/.test(nm)?'아부지':null,who=par||(/사쿠야/.test(nm)?'사쿠야':/료/.test(nm)?'료':/시온/.test(nm)?'시온':null);if(!who)return;
     capStop();call.mc=call.cc;
+    if(par){call.mcap=[par,'영아 말하고 있나? 안들리는데?'];renderCapOnly();muT.forEach(clearTimeout);muT=[];return}
     const L=who==='시온'?[['시온','영아 안들려'],['시온','음소거 풀어봐']]:[[who,'응?'],[who,'형 말 하고있는 거에요? 안들려요']];
     call.mcap=L[0];renderCapOnly();muT.forEach(clearTimeout);
     muT=[setTimeout(()=>{if(call&&call.mc!=null){call.mcap=L[1];renderCapOnly()}},2000)];
@@ -2523,7 +2524,7 @@ function endCall(kind){
   {const ce={id:uid(),name:call.name||call.num,num:call.num||'',kind:k,auto:!!call.auto,live:1,time:(D.settings.callTime||'').trim()||fmtTime()};if(!CL_HIDE(ce))D.calls.unshift(ce)}
   const vmN=call.vm?String(call.name):null;
   call=null;save();renderPhone();renderEditor();
-  if(vmN)afterT.push(setTimeout(()=>{const i=D.sms.findIndex(t=>t.name===vmN);if(i>=0){const tm=msgNow();D.sms[i].msgs.push({w:'date',t:'(오늘) '+tm,auto:true});arrive('sms',i,'대영아 형 일 중이라 나중에 전화할게',tm,true,0)}},1200));
+  if(vmN)afterT.push(setTimeout(()=>{const i=D.sms.findIndex(t=>t.name===vmN);if(i>=0){const tm=msgNow();D.sms[i].msgs.push({w:'date',t:'(오늘) '+tm,auto:true});arrive('sms',i,'영아 형 일 중이라 나중에 전화할게',tm,true,0)}},1200));
   if(wasAuto&&D.settings.afterMsg)afterT.push(setTimeout(sendAfter,900));
 }
 
